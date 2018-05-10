@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">tVINFO</string>
+    <string name="cap_name">Título</string>
+    <string name="cap_image">Poster</string>
+    <string name="cap_genre">Gênero</string>
+    <string name="cap_summary">Sinopse</string>
+    <string name="cap_premiered">Data de lançamento</string>
+</resources>
