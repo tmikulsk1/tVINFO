@@ -37,45 +37,91 @@ public final class TvInfoJson {
 
         try {
 
-            JSONArray baseJSON = new JSONArray(tvInfoJSON);
-            JSONObject mainJSON;
+            switch (Main.TYPE_JSON) {
+
+                case 0:
+
+                    JSONArray indexBaseJSON = new JSONArray(tvInfoJSON);
+                    JSONObject indexMainJSON;
 
 
-            for (int i = 0; i < baseJSON.length(); i++) {
+                    for (int i = 0; i < indexBaseJSON.length(); i++) {
 
-                mainJSON = new JSONObject(baseJSON.getString(i));
+                        indexMainJSON = new JSONObject(indexBaseJSON.getString(i));
 
-                String showName = mainJSON.getString("name");
-                String showGenre = "";
-                String showImage;
-                String showSummary = mainJSON.getString("summary");
-                String showPremiered = mainJSON.getString("premiered");
+                        String showName = indexMainJSON.getString("name");
+                        String showGenre = "";
+                        String showImage;
+                        String showSummary = indexMainJSON.getString("summary");
+                        String showPremiered = indexMainJSON.getString("premiered");
 
 
-                JSONArray jsonShowGenre = mainJSON.getJSONArray("genres");
+                        JSONArray jsonShowGenre = indexMainJSON.getJSONArray("genres");
 
-                for (int l = 0; l < jsonShowGenre.length(); l++) {
+                        for (int l = 0; l < jsonShowGenre.length(); l++) {
 
-                    showGenre += jsonShowGenre.getString(l).toString();
-                    if (l != jsonShowGenre.length() -1){
-                        showGenre += " / ";
+                            showGenre += jsonShowGenre.getString(l).toString();
+                            if (l != jsonShowGenre.length() - 1) {
+                                showGenre += " / ";
+                            }
+
+                        }
+
+                        JSONObject jsonShowImage = indexMainJSON.getJSONObject("image");
+                        showImage = jsonShowImage.getString("original");
+
+                        TvInfo tvInfos = new TvInfo(showName, showGenre, showImage, showSummary, showPremiered);
+                        tvInfoList.add(tvInfos);
                     }
 
-                }
+                    break;
 
-                JSONObject jsonShowImage = mainJSON.getJSONObject("image");
-                showImage = jsonShowImage.getString("original");
+                case 1:
 
-                TvInfo tvInfos = new TvInfo(showName, showGenre, showImage, showSummary, showPremiered);
-                tvInfoList.add(tvInfos);
+                    JSONArray searchBaseJson = new JSONArray(tvInfoJSON);
+
+                    for (int h = 0; h < searchBaseJson.length(); h++) {
+
+                        JSONObject searchMainJson = new JSONObject(searchBaseJson.getString(h));
+
+                        JSONObject showJSON = searchMainJson.getJSONObject("show");
+
+                        String showName = showJSON.getString("name");
+                        String showGenre = "";
+                        String showImage;
+                        String showSummary = showJSON.getString("summary");
+                        String showPremiered = showJSON.getString("premiered");
+
+
+                        JSONArray jsonShowGenre = showJSON.getJSONArray("genres");
+
+                        for (int l = 0; l < jsonShowGenre.length(); l++) {
+
+                            showGenre += jsonShowGenre.getString(l).toString();
+                            if (l != jsonShowGenre.length() - 1) {
+                                showGenre += " / ";
+                            }
+
+                        }
+
+                        JSONObject jsonShowImage = showJSON.getJSONObject("image");
+                        showImage = jsonShowImage.getString("original");
+
+                        TvInfo tvInfos = new TvInfo(showName, showGenre, showImage, showSummary, showPremiered);
+                        tvInfoList.add(tvInfos);
+
+                    }
+
+                    break;
+
             }
-
 
         } catch (JSONException e) {
             Log.e("JSON", "Problem retrieving JSON data: ", e);
         }
 
         return tvInfoList;
+
     }
 
     public static List<TvInfo> fetchEarthquakeData(String requestUrl) {
