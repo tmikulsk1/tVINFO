@@ -3,13 +3,17 @@ package com.tmikulsk1.tvinfo;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -32,7 +36,7 @@ public class Main extends AppCompatActivity implements LoaderManager.LoaderCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView tvInfoListView = findViewById(R.id.list);
+        final ListView tvInfoListView = findViewById(R.id.list);
 
         mAdapter = new TvInfoAdapter(this, new ArrayList<TvInfo>());
 
@@ -83,6 +87,7 @@ public class Main extends AppCompatActivity implements LoaderManager.LoaderCallb
 
         });
 
+
         tvInfoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -102,6 +107,29 @@ public class Main extends AppCompatActivity implements LoaderManager.LoaderCallb
             }
 
         });
+
+        tvInfoListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                final Favorite favorite = new Favorite(getApplicationContext());
+                final TvInfo currentShowInfo = mAdapter.getItem(i);
+
+                int rec = favorite.getShowFavorite(currentShowInfo.getShowId());
+                int id = currentShowInfo.getShowId();
+
+                if (rec == id) {
+                    view.findViewById(R.id.show_favorite).setBackgroundColor(Color.GRAY);
+                    favorite.delShowFavorite(currentShowInfo.getShowId());
+                } else {
+                    view.findViewById(R.id.show_favorite).setBackgroundColor(Color.RED);
+                    favorite.addShowFavorite(currentShowInfo.getShowId());
+                }
+
+                return true;
+            }
+        });
+
     }
 
     @Override

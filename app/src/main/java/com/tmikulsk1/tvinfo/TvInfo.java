@@ -8,24 +8,29 @@ import android.content.pm.InstrumentationInfo;
 
 public class TvInfo {
 
+    private int mShowId;
     private String mShowName;
     private String mShowGenre;
     private String mShowImage;
     private String mShowSummary;
     private String mShowPremiered;
 
-    public TvInfo(String showName,
+    public TvInfo(int showId,
+                  String showName,
                   String showGenre,
                   String showImage,
                   String showSummary,
                   String showPremiered){
 
+        mShowId = showId;
         mShowName = showName;
         mShowGenre = showGenre;
         mShowImage = showImage;
         mShowSummary = showSummary;
         mShowPremiered = showPremiered;
     }
+
+    public int getShowId() { return mShowId; }
 
     public String getShowName(){
         return mShowName;

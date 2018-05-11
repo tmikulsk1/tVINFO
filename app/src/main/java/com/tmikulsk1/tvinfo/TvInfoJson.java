@@ -49,6 +49,7 @@ public final class TvInfoJson {
 
                         indexMainJSON = new JSONObject(indexBaseJSON.getString(i));
 
+                        int showId = indexMainJSON.getInt("id");
                         String showName = indexMainJSON.getString("name");
                         String showGenre = "";
                         String showImage;
@@ -70,7 +71,7 @@ public final class TvInfoJson {
                         JSONObject jsonShowImage = indexMainJSON.getJSONObject("image");
                         showImage = jsonShowImage.getString("original");
 
-                        TvInfo tvInfos = new TvInfo(showName, showGenre, showImage, showSummary, showPremiered);
+                        TvInfo tvInfos = new TvInfo(showId, showName, showGenre, showImage, showSummary, showPremiered);
                         tvInfoList.add(tvInfos);
                     }
 
@@ -86,6 +87,7 @@ public final class TvInfoJson {
 
                         JSONObject showJSON = searchMainJson.getJSONObject("show");
 
+                        int showId = showJSON.getInt("id");
                         String showName = showJSON.getString("name");
                         String showGenre = "";
                         String showImage;
@@ -107,7 +109,7 @@ public final class TvInfoJson {
                         JSONObject jsonShowImage = showJSON.getJSONObject("image");
                         showImage = jsonShowImage.getString("original");
 
-                        TvInfo tvInfos = new TvInfo(showName, showGenre, showImage, showSummary, showPremiered);
+                        TvInfo tvInfos = new TvInfo(showId, showName, showGenre, showImage, showSummary, showPremiered);
                         tvInfoList.add(tvInfos);
 
                     }
