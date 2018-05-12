@@ -3,6 +3,8 @@ package com.tmikulsk1.tvinfo;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Map;
+
 public class Favorite {
 
     public SharedPreferences sharedPreferences;
@@ -34,9 +36,20 @@ public class Favorite {
 
     public int getShowFavorite(int favorite){
 
-        int id = sharedPreferences.getInt("showFavoriteID" + Integer.toString(favorite), 0);
+        return sharedPreferences.getInt("showFavoriteID" + Integer.toString(favorite), 0);
 
-        return id;
+    }
+
+    public Map<String, ?> getFavorites(){
+
+        return sharedPreferences.getAll();
+
+    }
+
+    public void clearAll(){
+
+        preferencesEditor.clear();
+        preferencesEditor.commit();
 
     }
 

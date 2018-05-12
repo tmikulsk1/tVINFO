@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -30,6 +32,29 @@ public class Main extends AppCompatActivity implements LoaderManager.LoaderCallb
     private static final String JSON_MAIN = "http://api.tvmaze.com/shows";
     private static final String JSON_SEARCH = "http://api.tvmaze.com/search/shows?q=";
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.remove_favorite:
+
+                Favorite favorite = new Favorite(getApplicationContext());
+
+                favorite.clearAll();
+                getLoaderManager().restartLoader(0, null, Main.this);
+
+
+            break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

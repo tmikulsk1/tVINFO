@@ -115,6 +115,11 @@ public final class TvInfoJson {
                     }
 
                     break;
+                case 2:
+
+
+
+                    break;
 
             }
 

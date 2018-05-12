@@ -5,4 +5,5 @@
     <string name="cap_genre">Gênero</string>
     <string name="cap_summary">Sinopse</string>
     <string name="cap_premiered">Data de lançamento</string>
+    <string name="remove_favorite">Remove Favorite</string>
 </resources>
