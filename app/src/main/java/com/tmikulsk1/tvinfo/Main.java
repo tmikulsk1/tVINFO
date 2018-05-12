@@ -6,16 +6,17 @@ import android.content.Loader;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class Main extends AppCompatActivity implements LoaderManager.LoaderCallb
 
     private TvInfoAdapter mAdapter;
     private SearchView searchView;
+    private ImageView favoriteImage;
+    private LinearLayout loading;
 
     private static String JSON = "";
     //0 for index shows | 1 for search shows
@@ -32,7 +35,7 @@ public class Main extends AppCompatActivity implements LoaderManager.LoaderCallb
     private static final String JSON_MAIN = "http://api.tvmaze.com/shows";
     private static final String JSON_SEARCH = "http://api.tvmaze.com/search/shows?q=";
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -54,12 +57,15 @@ public class Main extends AppCompatActivity implements LoaderManager.LoaderCallb
             break;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         final ListView tvInfoListView = findViewById(R.id.list);
 
@@ -139,15 +145,18 @@ public class Main extends AppCompatActivity implements LoaderManager.LoaderCallb
 
                 final Favorite favorite = new Favorite(getApplicationContext());
                 final TvInfo currentShowInfo = mAdapter.getItem(i);
+                favoriteImage = view.findViewById(R.id.show_favorite);
 
                 int rec = favorite.getShowFavorite(currentShowInfo.getShowId());
                 int id = currentShowInfo.getShowId();
 
                 if (rec == id) {
-                    view.findViewById(R.id.show_favorite).setBackgroundColor(Color.GRAY);
+                    favoriteImage.setImageResource(R.drawable.fav_0);
+                    //view.findViewById(R.id.show_favorite).setBackgroundColor(Color.GRAY);
                     favorite.delShowFavorite(currentShowInfo.getShowId());
                 } else {
-                    view.findViewById(R.id.show_favorite).setBackgroundColor(Color.RED);
+                    favoriteImage.setImageResource(R.drawable.fav_1);
+                    //view.findViewById(R.id.show_favorite).setBackgroundResource(Color.RED);
                     favorite.addShowFavorite(currentShowInfo.getShowId());
                 }
 
@@ -160,13 +169,18 @@ public class Main extends AppCompatActivity implements LoaderManager.LoaderCallb
     @Override
     public Loader<List<TvInfo>> onCreateLoader(int i, Bundle bundle) {
         mAdapter.clear();
+        loading = findViewById(R.id.loading);
+        loading.setVisibility(View.VISIBLE);
         return new TvInfoLoader(this, JSON);
     }
 
     @Override
     public void onLoadFinished(Loader<List<TvInfo>> loader, List<TvInfo> tvInfos) {
 
+
         if (tvInfos != null && !tvInfos.isEmpty()) {
+            loading = findViewById(R.id.loading);
+            loading.setVisibility(View.GONE);
             mAdapter.addAll(tvInfos);
         } else {
             Log.e("main", "no tv show");

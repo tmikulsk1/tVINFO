@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/remove_favorite"
-        android:icon="@drawable/film"
+        android:icon="@drawable/favorite_rem"
         android:title="@string/remove_favorite"
         app:showAsAction="always" />
 

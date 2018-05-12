@@ -68,9 +68,11 @@ public class TvInfoAdapter extends ArrayAdapter<TvInfo> {
         int rec = favorite.getShowFavorite(currentShow.getShowId());
 
         if (rec == id) {
-            showFavorite.setBackgroundColor(Color.RED);
+            showFavorite.setImageResource(R.drawable.fav_1);
+            //showFavorite.setBackgroundColor(Color.RED);
         } else {
-            showFavorite.setBackgroundColor(Color.GRAY);
+            showFavorite.setImageResource(R.drawable.fav_0);
+            //showFavorite.setBackgroundColor(Color.GRAY);
         }
 
         //PICASSO
