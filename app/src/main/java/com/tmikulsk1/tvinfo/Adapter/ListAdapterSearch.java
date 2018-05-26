@@ -1,32 +1,30 @@
-package com.tmikulsk1.tvinfo;
+package com.tmikulsk1.tvinfo.Adapter;
 
-import android.app.Activity;
-import android.graphics.Color;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.squareup.picasso.Picasso;
+import com.tmikulsk1.tvinfo.SharedPreferences.Favorite;
+import com.tmikulsk1.tvinfo.POJO.Shows;
+import com.tmikulsk1.tvinfo.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by tmikulsk1 on 10/05/2018.
- */
-
-public class TvInfoAdapter extends ArrayAdapter<TvInfo> {
+public class ListAdapterSearch extends ArrayAdapter<Shows> {
 
     int id;
+    int sharedPreferencesID;
     String name;
-    String genre;
+    List<String> genre;
+    String genreString;
     String image;
 
     TextView showName;
@@ -35,8 +33,8 @@ public class TvInfoAdapter extends ArrayAdapter<TvInfo> {
     ImageView showFavorite;
 
 
-    public TvInfoAdapter(Activity context, ArrayList<TvInfo> tvInfos){
-        super(context, 0, tvInfos);
+    public ListAdapterSearch(Context context, ArrayList<Shows> shows){
+        super(context, 0, shows);
     }
 
     @NonNull
@@ -49,25 +47,38 @@ public class TvInfoAdapter extends ArrayAdapter<TvInfo> {
             listView = LayoutInflater.from(getContext()).inflate(R.layout.item_view, parent, false );
         }
 
-        final TvInfo currentShow = getItem(position);
-
         showName = listView.findViewById(R.id.show_name);
         showGenre = listView.findViewById(R.id.show_genre);
         showImage = listView.findViewById(R.id.show_image);
         showFavorite = listView.findViewById(R.id.show_favorite);
 
-        id = currentShow.getShowId();
-        name = currentShow.getShowName();
-        genre = currentShow.getShowGenre();
-        image = currentShow.getShowImage();
+
+
+        final Shows currentShows = getItem(position);
+
+        id = currentShows.getShow().getShowId();
+        name = currentShows.getShow().getShowName();
+        genre = currentShows.getShow().getShowGenre();
+
+        if (currentShows.getShow().getShowImage() != null) {
+            image =currentShows.getShow().getShowImage().getOriginal();
+        }
 
         showName.setText(name);
-        showGenre.setText(genre);
+        genreString = "";
+        for (String s : genre){
+            genreString += s + " / ";
+            genreString = genreString.substring(0, genreString.length() - 1);
+        }
+        showGenre.setText(genreString);
 
         final Favorite favorite = new Favorite(getContext());
-        int rec = favorite.getShowFavorite(currentShow.getShowId());
+        sharedPreferencesID = favorite.getShowFavorite(currentShows.getShow().getShowId());
 
-        if (rec == id) {
+
+
+
+        if (sharedPreferencesID == id) {
             showFavorite.setImageResource(R.drawable.fav_1);
             //showFavorite.setBackgroundColor(Color.RED);
         } else {
@@ -77,9 +88,11 @@ public class TvInfoAdapter extends ArrayAdapter<TvInfo> {
 
         //PICASSO
         //ADD PLACEHOLDER AND ERROR FALLBACK
-        Picasso.with(getContext()).load(image).into(showImage);
-
+        if (image != null) {
+            Picasso.with(getContext()).load(image).into(showImage);
+        }
         return listView;
     }
+
 
 }

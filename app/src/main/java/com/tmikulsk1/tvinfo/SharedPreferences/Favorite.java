@@ -1,4 +1,4 @@
-package com.tmikulsk1.tvinfo;
+package com.tmikulsk1.tvinfo.SharedPreferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
